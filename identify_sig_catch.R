@@ -4,6 +4,13 @@ library(readxl)
 library(sf)
 library(ozmaps)
 
+# options to specify a "significant catch"
+# daily_count > SEASONAL_COUNT_THRESH * mean_seasonal_daily_count &
+#             daily_count > DAILY_COUNT_THRESH
+
+DAILY_COUNT_THRESH <- 10
+SEASONAL_COUNT_THRESH <- 2
+
 d <- read_excel("./data/All trap raw data_GPS_ok.xlsx") %>%
     mutate(Lat = as.numeric(Lat)) %>%
     rename(
@@ -47,8 +54,6 @@ get_seasonal_year <- function(date) {
         factor(if_else(month(date) == 12, year(date) + 1, year(date)))
     )
 }
-daily_count_thresh <- 10
-seasonal_count_thresh <- 2
 
 sig_catch <- d %>%
     mutate(season = get_season(date)) %>%
@@ -57,8 +62,8 @@ sig_catch <- d %>%
     mutate(mean_seasonal_daily_count = mean(daily_count)) %>%
     ungroup() %>%
     filter(
-        daily_count > seasonal_count_thresh * mean_seasonal_daily_count &
-            daily_count > daily_count_thresh
+        daily_count > SEASONAL_COUNT_THRESH * mean_seasonal_daily_count &
+            daily_count > DAILY_COUNT_THRESH
     )
 write_csv(sig_catch, "./data/sig_catch.csv")
 # number of months spanned by sig catches
@@ -88,7 +93,7 @@ if (FALSE) {
             ggplot(aes(day_to_date(yday(date)), daily_count, color = season_year)) +
             geom_line() +
             geom_point(data = isig_catch, shape = 21, size = 2) +
-            geom_hline(yintercept = daily_count_thresh, linetype = 2, color = "grey") +
+            geom_hline(yintercept = DAILY_COUNT_THRESH, linetype = 2, color = "grey") +
             # scale_y_log10() +
             scale_x_date(date_break = "1 month", date_labels = "%b") +
             # facet_grid(loc ~ .) +
