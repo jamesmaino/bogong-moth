@@ -100,9 +100,6 @@ sims %>%
 
 # filter flight trajectories based on climatic conditions
 
-sims_filtered %>%
-    distinct(loc)
-
 sims_filtered <- sims %>%
     mutate(date = stringr::str_extract(run, "(?<=date_)\\d+-\\d+-\\d+")) %>%
     mutate(date = as.Date(date)) %>%
