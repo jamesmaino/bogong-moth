@@ -44,8 +44,8 @@ dir.create("met", showWarnings = FALSE)
 dir.create("out", showWarnings = FALSE)
 
 # for each date run a backwards simulation from 6am AEDT at the trap site to 6pm the previous night
-# for (i in 1:nrow(d)) {
-for (i in 1) {
+for (i in 1:nrow(d)) {
+    # for (i in 1) {
     d_i <- d[i, ]
     cat(sprintf("running simulation %d of %d...\n", i, nrow(d)))
     run_name <- sprintf("date_%s_loc_%s", d_i$date, d_i$loc)
@@ -65,7 +65,7 @@ for (i in 1) {
                 exec_dir = here::here("out")
             ) %>%
             mutate(run = run_name) %>%
-            mutate(timespan = )
+            mutate(timespan = d_i$timespan)
         write_csv(trajectory, sprintf("./sims/%s.csv", run_name))
     })
 }
@@ -98,8 +98,12 @@ sims %>%
     filter(minlat < -38) %>%
     distinct(run, rainfall, temp_change, pressure_change)
 
-# filter flight trajectories based on climatic conditions
+# # filter flight trajectories based on location
+# sims_filtered <- sims %>%
+#   filter(grepl("ARARAT", run)) %>%
+#   filter(as.Date(traj_dt) == "1981-10-13")
 
+# filter flight trajectories based on climatic conditions
 sims_filtered <- sims %>%
     mutate(date = stringr::str_extract(run, "(?<=date_)\\d+-\\d+-\\d+")) %>%
     mutate(date = as.Date(date)) %>%
