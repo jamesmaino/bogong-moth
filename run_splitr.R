@@ -9,6 +9,10 @@ library(lubridate)
 library(sf)
 library(ozmaps)
 
+# to do
+# incorporate the climatic data at destination
+# incorporate multi-night trajectory assuming consecutive nights
+
 # simulation options
 HEIGHT <- 50 # the starting height in m
 START_TIME <- 6 # start time of simulation in AEDT
@@ -24,7 +28,8 @@ options(timeout = 5 * 60) # allow more time to download climatic files
 
 # load significant catch data made by identify_sig_catch.R
 # create a new date for each day in the sample window
-d <- read_csv("./data/sig_catch.csv") %>%
+d0 <- read_csv("./data/sig_catch.csv")
+d <- d0 %>%
     mutate(date_sampled = as.Date(date)) %>%
     # head(n = 100) %>%
     rowwise() %>%
@@ -39,7 +44,8 @@ dir.create("met", showWarnings = FALSE)
 dir.create("out", showWarnings = FALSE)
 
 # for each date run a backwards simulation from 6am AEDT at the trap site to 6pm the previous night
-for (i in 101:nrow(d)) {
+# for (i in 1:nrow(d)) {
+for (i in 1) {
     d_i <- d[i, ]
     cat(sprintf("running simulation %d of %d...\n", i, nrow(d)))
     run_name <- sprintf("date_%s_loc_%s", d_i$date, d_i$loc)
@@ -58,7 +64,8 @@ for (i in 101:nrow(d)) {
                 met_dir = here::here("met"),
                 exec_dir = here::here("out")
             ) %>%
-            mutate(run = run_name)
+            mutate(run = run_name) %>%
+            mutate(timespan = )
         write_csv(trajectory, sprintf("./sims/%s.csv", run_name))
     })
 }
@@ -92,12 +99,22 @@ sims %>%
     distinct(run, rainfall, temp_change, pressure_change)
 
 # filter flight trajectories based on climatic conditions
+
+sims_filtered %>%
+    distinct(loc)
+
 sims_filtered <- sims %>%
+    mutate(date = stringr::str_extract(run, "(?<=date_)\\d+-\\d+-\\d+")) %>%
+    mutate(date = as.Date(date)) %>%
+    mutate(loc = stringr::str_extract(run, "(?<=loc_).*+")) %>%
+    left_join(distinct(d, date, loc, date_sampled, timespan)) %>%
     filter(
-        rainfall > RAINFALL_THRESH |
+        timespan == 1 |
+            rainfall > RAINFALL_THRESH |
             temp_change < -TEMPERATURE_THRESH |
             pressure_change < -PRESSURE_THRESH
     )
+
 
 
 # Plot trajectories
