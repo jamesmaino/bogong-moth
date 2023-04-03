@@ -44,8 +44,8 @@ dir.create("met", showWarnings = FALSE)
 dir.create("out", showWarnings = FALSE)
 
 # for each date run a backwards simulation from 6am AEDT at the trap site to 6pm the previous night
-for (i in 1:nrow(d)) {
-    # for (i in 1) {
+# for (i in 1:nrow(d)) {
+for (i in 1) {
     d_i <- d[i, ]
     cat(sprintf("running simulation %d of %d...\n", i, nrow(d)))
     run_name <- sprintf("date_%s_loc_%s", d_i$date, d_i$loc)
@@ -103,20 +103,22 @@ sims %>%
 #   filter(grepl("ARARAT", run)) %>%
 #   filter(as.Date(traj_dt) == "1981-10-13")
 
-# filter flight trajectories based on climatic conditions
+# # filter flight trajectories based on climatic conditions
+# sims_filtered <- sims %>%
+#     mutate(date = stringr::str_extract(run, "(?<=date_)\\d+-\\d+-\\d+")) %>%
+#     mutate(date = as.Date(date)) %>%
+#     mutate(loc = stringr::str_extract(run, "(?<=loc_).*+")) %>%
+#     left_join(distinct(d, date, loc, date_sampled, timespan)) %>%
+#     filter(
+#         timespan == 1 |
+#             rainfall > RAINFALL_THRESH |
+#             temp_change < -TEMPERATURE_THRESH |
+#             pressure_change < -PRESSURE_THRESH
+#     )
+
 sims_filtered <- sims %>%
-    mutate(date = stringr::str_extract(run, "(?<=date_)\\d+-\\d+-\\d+")) %>%
-    mutate(date = as.Date(date)) %>%
-    mutate(loc = stringr::str_extract(run, "(?<=loc_).*+")) %>%
-    left_join(distinct(d, date, loc, date_sampled, timespan)) %>%
-    filter(
-        timespan == 1 |
-            rainfall > RAINFALL_THRESH |
-            temp_change < -TEMPERATURE_THRESH |
-            pressure_change < -PRESSURE_THRESH
-    )
-
-
+    filter(grepl("HORSHAM", run)) %>%
+    filter(as.Date(traj_dt) == "1980-10-23")
 
 # Plot trajectories
 aus <- ozmap_data() %>%
