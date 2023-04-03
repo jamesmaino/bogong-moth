@@ -44,8 +44,8 @@ dir.create("met", showWarnings = FALSE)
 dir.create("out", showWarnings = FALSE)
 
 # for each date run a backwards simulation from 6am AEDT at the trap site to 6pm the previous night
-# for (i in 1:nrow(d)) {
-for (i in 1) {
+for (i in 1:nrow(d)) {
+    # for (i in 1) {
     d_i <- d[i, ]
     cat(sprintf("running simulation %d of %d...\n", i, nrow(d)))
     run_name <- sprintf("date_%s_loc_%s", d_i$date, d_i$loc)
