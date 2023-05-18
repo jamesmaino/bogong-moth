@@ -14,12 +14,22 @@ library(ozmaps)
 # incorporate multi-night trajectory assuming consecutive nights
 
 # simulation options
-HEIGHT <- 50 # the starting height in m
+HEIGHT <- 1000 # the starting height in m
 START_TIME <- 6 # start time of simulation in AEDT
 DURATION <- 12 # assume flight start 12 hours prior (6pm previous day)
 RAINFALL_THRESH <- 99999 # min rainfall (mm) threshold for migration (summed across flight path)
 TEMPERATURE_THRESH <- 4 # min drop in temperature (C) threshold for migration (from start to end of flight path)
 PRESSURE_THRESH <- 6 # min drop in pressure (mb) threshold for migration (from start to end of flight path)
+
+#  [1] "Maffra"               "HORSHAM"              "HAMILTON"
+#  [4] "BALLARAT"             "RUTHERGLEN"           "Yanakie"
+#  [7] "SWANHILL"             "ARARAT"               "FOWLERS GAP"
+# [10] "Turretfield"          "Mt. Dowe"             "Point Lookout"
+# [13] "Laureldale, Armidale" "Newholme"             "Thora"
+# Case sensitive!
+LOCATIONS <- c("ARARAT", "HAMILTON", "HORSHAM", "RUTHERGLEN", "Maffra", "Yanakie")
+DATES <- c("1980-10-20", "1980-10-27")
+
 
 # useful constants
 AEDT_TO_UTC_OFFSET <- -11 # offset to convert AEDT time to UTC
@@ -29,8 +39,12 @@ options(timeout = 5 * 60) # allow more time to download climatic files
 # load significant catch data made by identify_sig_catch.R
 # create a new date for each day in the sample window
 d0 <- read_csv("./data/sig_catch.csv")
+
+
 d <- d0 %>%
     mutate(date_sampled = as.Date(date)) %>%
+    filter(loc %in% LOCATIONS) %>%
+    filter(as.Date(date_sampled) %in% as.Date(DATES)) %>%
     # head(n = 100) %>%
     rowwise() %>%
     mutate(date = list(seq.Date(date_sampled - timespan + 1, date_sampled, by = 1))) %>%
@@ -39,11 +53,16 @@ d <- d0 %>%
     distinct() %>%
     mutate(year_month = format(date))
 
+if (nrow(d) == 0) {
+    stop("no significant catch data found for selected locations or dates")
+}
+
 # create met and out dit for simulations
 dir.create("met", showWarnings = FALSE)
 dir.create("out", showWarnings = FALSE)
 
 # for each date run a backwards simulation from 6am AEDT at the trap site to 6pm the previous night
+sims <- list()
 for (i in 1:nrow(d)) {
     # for (i in 1) {
     d_i <- d[i, ]
@@ -66,12 +85,11 @@ for (i in 1:nrow(d)) {
             ) %>%
             mutate(run = run_name) %>%
             mutate(timespan = d_i$timespan)
-        write_csv(trajectory, sprintf("./sims/%s.csv", run_name))
+        sims[[i]] <- trajectory
     })
 }
 
 
-sim_files <- list.files("sims", ".csv", full.names = TRUE)
 
 # bind data and calculate climatic variables
 get_season <- function(input.date) {
@@ -82,7 +100,7 @@ get_season <- function(input.date) {
     return(cuts)
 }
 
-sims <- bind_rows(lapply(sim_files, read_csv, col_types = cols())) %>%
+sims <- bind_rows(sims) %>%
     group_by(run) %>%
     mutate(rainfall = sum(rainfall)) %>%
     mutate(temp_change = air_temp[traj_dt == min(traj_dt)] - air_temp[traj_dt == max(traj_dt)]) %>%
@@ -103,22 +121,23 @@ sims %>%
 #   filter(grepl("ARARAT", run)) %>%
 #   filter(as.Date(traj_dt) == "1981-10-13")
 
-# # filter flight trajectories based on climatic conditions
-# sims_filtered <- sims %>%
-#     mutate(date = stringr::str_extract(run, "(?<=date_)\\d+-\\d+-\\d+")) %>%
-#     mutate(date = as.Date(date)) %>%
-#     mutate(loc = stringr::str_extract(run, "(?<=loc_).*+")) %>%
-#     left_join(distinct(d, date, loc, date_sampled, timespan)) %>%
-#     filter(
-#         timespan == 1 |
-#             rainfall > RAINFALL_THRESH |
-#             temp_change < -TEMPERATURE_THRESH |
-#             pressure_change < -PRESSURE_THRESH
-#     )
-
+# filter flight trajectories based on climatic conditions
 sims_filtered <- sims %>%
-    filter(grepl("HORSHAM", run)) %>%
-    filter(as.Date(traj_dt) == "1980-10-23")
+    mutate(date = stringr::str_extract(run, "(?<=date_)\\d+-\\d+-\\d+")) %>%
+    mutate(date = as.Date(date)) %>%
+    mutate(loc = stringr::str_extract(run, "(?<=loc_).*+")) %>%
+    left_join(distinct(d, date, loc, date_sampled, timespan)) %>%
+    filter(
+        timespan == 1 |
+            rainfall > RAINFALL_THRESH |
+            temp_change < -TEMPERATURE_THRESH |
+            pressure_change < -PRESSURE_THRESH
+    )
+
+# ararat, hamilton, horsham, rutherglen, maffra,
+# sims_filtered <- sims %>%
+#     filter(grepl("HORSHAM", run)) %>%
+#     filter(as.Date(traj_dt) == "1980-10-23")
 
 # Plot trajectories
 aus <- ozmap_data() %>%
