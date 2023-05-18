@@ -28,7 +28,7 @@ PRESSURE_THRESH <- 6 # min drop in pressure (mb) threshold for migration (from s
 # [13] "Laureldale, Armidale" "Newholme"             "Thora"
 # Case sensitive!
 LOCATIONS <- c("ARARAT", "HAMILTON", "HORSHAM", "RUTHERGLEN", "Maffra", "Yanakie")
-DATES <- c("1980-10-20", "1980-10-27")
+DATES <- c("1980-10-19")
 
 
 # useful constants
@@ -44,13 +44,13 @@ d0 <- read_csv("./data/sig_catch.csv")
 d <- d0 %>%
     mutate(date_sampled = as.Date(date)) %>%
     filter(loc %in% LOCATIONS) %>%
-    filter(as.Date(date_sampled) %in% as.Date(DATES)) %>%
     # head(n = 100) %>%
     rowwise() %>%
     mutate(date = list(seq.Date(date_sampled - timespan + 1, date_sampled, by = 1))) %>%
     ungroup() %>%
     unnest(date) %>%
     distinct() %>%
+    filter(as.Date(date) %in% as.Date(DATES)) %>%
     mutate(year_month = format(date))
 
 if (nrow(d) == 0) {
@@ -150,10 +150,12 @@ dsum <- d %>%
     st_as_sf(coords = c("lon", "lat"), crs = 4326)
 
 plot_trajectory <- function(sims, plot_name) {
+    sims <- sims %>%
+        mutate(date = factor(as.Date(traj_dt)))
     p <- ggplot(dsum) +
         geom_sf(data = aus) +
         geom_point(aes(geometry = geometry), stat = "sf_coordinates") +
-        geom_line(data = sims, aes(lon, lat, group = run), alpha = 0.5) +
+        geom_line(data = sims, aes(lon, lat, group = run, color = date), alpha = 0.5) +
         coord_sf(xlim = c(135, 155), ylim = c(-25, -45)) +
         ggtitle(plot_name)
     print(p)
