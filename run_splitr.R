@@ -60,6 +60,7 @@ if (nrow(d) == 0) {
 # create met and out dit for simulations
 dir.create("met", showWarnings = FALSE)
 dir.create("out", showWarnings = FALSE)
+dir.create("sims", showWarnings = FALSE)
 
 # for each date run a backwards simulation from 6am AEDT at the trap site to 6pm the previous night
 sims <- list()
