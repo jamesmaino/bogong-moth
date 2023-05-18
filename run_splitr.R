@@ -28,7 +28,7 @@ PRESSURE_THRESH <- 6 # min drop in pressure (mb) threshold for migration (from s
 # [13] "Laureldale, Armidale" "Newholme"             "Thora"
 # Case sensitive!
 LOCATIONS <- c("ARARAT", "HAMILTON", "HORSHAM", "RUTHERGLEN", "Maffra", "Yanakie")
-DATES <- c("1980-10-19")
+DATES <- c("1980-10-23", "1980-10-22", "1980-10-21")
 
 
 # useful constants
@@ -91,7 +91,6 @@ for (i in 1:nrow(d)) {
 }
 
 
-
 # bind data and calculate climatic variables
 get_season <- function(input.date) {
     m <- month(input.date)
@@ -151,7 +150,7 @@ dsum <- d %>%
 
 plot_trajectory <- function(sims, plot_name) {
     sims <- sims %>%
-        mutate(date = factor(as.Date(traj_dt)))
+        mutate(date = factor(format(with_tz(sims$traj_dt_i, "Australia/Sydney"), "%Y-%m-%d")))
     p <- ggplot(dsum) +
         geom_sf(data = aus) +
         geom_point(aes(geometry = geometry), stat = "sf_coordinates") +
