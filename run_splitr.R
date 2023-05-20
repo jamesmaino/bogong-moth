@@ -154,7 +154,7 @@ plot_trajectory <- function(sims, plot_name) {
     p <- ggplot(dsum) +
         geom_sf(data = aus) +
         geom_point(aes(geometry = geometry), stat = "sf_coordinates") +
-        geom_line(data = sims, aes(lon, lat, group = run, color = date), alpha = 0.5) +
+        geom_path(data = sims, aes(lon, lat, group = run, color = date), alpha = 0.5) +
         coord_sf(xlim = c(135, 155), ylim = c(-25, -45)) +
         ggtitle(plot_name)
     print(p)
