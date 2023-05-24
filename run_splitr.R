@@ -168,6 +168,30 @@ for (season_i in c("Summer", "Autumn", "Winter", "Spring")) {
         plot_trajectory(paste0("trajectories_filtered_", season_i))
 }
 
+
+# plot temperature profile
+KelvinToCelsius <- function(TK) {
+    TK - 273.15
+}
+
+plot_temperature <- function(sims, plot_name) {
+    sims %>%
+        # extract loc from run
+        mutate(date = with_tz(sims$traj_dt, "Australia/Sydney")) %>%
+        mutate(site = str_extract(run, "(?<=loc_)\\w+")) %>%
+        ggplot() +
+        geom_line(aes(date, KelvinToCelsius(air_temp), group = run)) +
+        geom_bar(stat = "identity", aes(date, rainfall * 24, group = run), fill = "blue", alpha = 0.4) +
+        facet_wrap(~site) +
+        scale_x_datetime(date_breaks = "1 day", date_labels = "%d %b %Y") +
+        ylab("Temp (C) or daily rainfall (mm)") +
+        xlab("Date") +
+        ggtitle(plot_name)
+
+    ggsave(paste0("./plots/", plot_name, ".png"), width = 8)
+}
+plot_temperature(sims, "temperature_all")
+
 # Plot predicted origin of flight
 plot_origin <- function(sims, plot_name) {
     grid_sum <- sims %>%
