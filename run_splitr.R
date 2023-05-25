@@ -32,7 +32,7 @@ DATES <- c("1980-10-23", "1980-10-22", "1980-10-21")
 
 
 # useful constants
-AEDT_TO_UTC_OFFSET <- -11 # offset to convert AEDT time to UTC
+AEDT_TO_UTC_OFFSET <- -10 # offset to convert AEDT time to UTC
 
 options(timeout = 5 * 60) # allow more time to download climatic files
 
@@ -150,7 +150,7 @@ dsum <- d %>%
 
 plot_trajectory <- function(sims, plot_name) {
     sims <- sims %>%
-        mutate(date = factor(format(with_tz(sims$traj_dt_i, "Australia/Sydney"), "%Y-%m-%d")))
+        mutate(date = factor(format(with_tz(traj_dt_i, "Australia/Sydney"), "%Y-%m-%d")))
     p <- ggplot(dsum) +
         geom_sf(data = aus) +
         geom_point(aes(geometry = geometry), stat = "sf_coordinates") +
@@ -177,7 +177,7 @@ KelvinToCelsius <- function(TK) {
 plot_temperature <- function(sims, plot_name) {
     sims %>%
         # extract loc from run
-        mutate(date = with_tz(sims$traj_dt, "Australia/Sydney")) %>%
+        mutate(date = with_tz(traj_dt, "Australia/Sydney")) %>%
         mutate(site = str_extract(run, "(?<=loc_)\\w+")) %>%
         ggplot() +
         geom_line(aes(date, KelvinToCelsius(air_temp), group = run)) +
