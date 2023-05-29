@@ -20,6 +20,7 @@ DURATION <- 12 # assume flight start 12 hours prior (6pm previous day)
 RAINFALL_THRESH <- 99999 # min rainfall (mm) threshold for migration (summed across flight path)
 TEMPERATURE_THRESH <- 4 # min drop in temperature (C) threshold for migration (from start to end of flight path)
 PRESSURE_THRESH <- 6 # min drop in pressure (mb) threshold for migration (from start to end of flight path)
+NSTEPS <- 4 # number of steps to run
 
 #  [1] "Maffra"               "HORSHAM"              "HAMILTON"
 #  [4] "BALLARAT"             "RUTHERGLEN"           "Yanakie"
@@ -62,7 +63,15 @@ dir.create("met", showWarnings = FALSE)
 dir.create("out", showWarnings = FALSE)
 dir.create("sims", showWarnings = FALSE)
 
+aus <- ozmap_data() %>%
+    st_transform(4326)
+
 # for each date run a backwards simulation from 6am AEDT at the trap site to 6pm the previous night
+
+# recursively call hysplit_trajectory where the final point becomes the input to the next sim
+
+
+
 sims <- list()
 for (i in 1:nrow(d)) {
     # for (i in 1) {
@@ -70,23 +79,58 @@ for (i in 1:nrow(d)) {
     cat(sprintf("running simulation %d of %d...\n", i, nrow(d)))
     run_name <- sprintf("date_%s_loc_%s", d_i$date, d_i$loc)
     try({
-        trajectory <-
-            hysplit_trajectory(
-                lat = d_i$lat,
-                lon = d_i$lon,
-                height = HEIGHT,
-                duration = DURATION,
-                days = d_i$date,
-                daily_hours = START_TIME + AEDT_TO_UTC_OFFSET,
-                direction = "backward",
-                met_type = "reanalysis",
-                extended_met = TRUE,
-                met_dir = here::here("met"),
-                exec_dir = here::here("out")
-            ) %>%
-            mutate(run = run_name) %>%
-            mutate(timespan = d_i$timespan)
-        sims[[i]] <- trajectory
+        trajectory <- list()
+        for (j in 1:NSTEPS) {
+            # 1 Run HYSPLIT backwards at 1000 m.  Is the endpoint above land?  Yes (3), No (2)
+            trajectory1 <-
+                hysplit_trajectory(
+                    lat = d_i$lat,
+                    lon = d_i$lon,
+                    height = HEIGHT,
+                    duration = DURATION,
+                    days = d_i$date,
+                    daily_hours = START_TIME + AEDT_TO_UTC_OFFSET,
+                    direction = "backward",
+                    met_type = "reanalysis",
+                    extended_met = TRUE,
+                    met_dir = here::here("met"),
+                    exec_dir = here::here("out")
+                ) %>%
+                mutate(run = run_name) %>%
+                mutate(timespan = d_i$timespan)
+            # 2 Move to the point where the trajectory crosses the coast, note the location and time. Go to (3)
+            trajectory2 <- st_as_sf(trajectory1, coords = c("lon", "lat"), crs = 4326, remove = FALSE)
+            trajectory2 <- st_intersection(aus, trajectory2)
+            if (nrow(trajectory2) == 0) break
+            trajectory3 <- trajectory2[nrow(trajectory2), ]
+
+            # 3 Is the 1000 m temp above 10C? Yes (5) No (4)
+            # if(trajectory2$air_temp - 273.15 < 10) # we may as well run 4
+
+            # 4 Run HYSPLIT at 0 m from either the original or revised (coastal) starting point (run backwards or forwards, doesn’t matter, we just want the starting surface temp).  Is that temp above 10C? Yes (5), No (6)
+            trajectory3 <-
+                hysplit_trajectory(
+                    lat = trajectory3$lat,
+                    lon = trajectory3$lon,
+                    height = 0,
+                    duration = 0,
+                    days = as.Date(trajectory3$traj_dt),
+                    daily_hours = as.numeric(format(trajectory3$traj_dt, "%H")),
+                    direction = "backward",
+                    met_type = "reanalysis",
+                    extended_met = TRUE,
+                    met_dir = here::here("met"),
+                    exec_dir = here::here("out")
+                )
+            if (trajectory3$air_temp - 273.15 < 10) break
+
+            # 5 Accept the trajectory
+            trajectory[[j]] <- trajectory2
+            d_i$date <- as.Date(trajectory3$traj_dt)
+            d_i$lat <- trajectory3$lat
+            d_i$lon <- trajectory3$lon
+        }
+        sims[[i]] <- bind_rows(trajectory)
     })
 }
 
@@ -140,8 +184,7 @@ sims_filtered <- sims %>%
 #     filter(as.Date(traj_dt) == "1980-10-23")
 
 # Plot trajectories
-aus <- ozmap_data() %>%
-    st_transform(4326)
+
 
 dsum <- d %>%
     group_by(loc, lon, lat) %>%
