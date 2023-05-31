@@ -125,7 +125,7 @@ for (i in 1:nrow(d)) {
             if (trajectory3$air_temp - 273.15 < 10) break
 
             # 5 Accept the trajectory
-            trajectory[[j]] <- trajectory2
+            trajectory[[j]] <- st_set_geometry(trajectory2, NULL)
             d_i$date <- as.Date(trajectory3$traj_dt)
             d_i$lat <- trajectory3$lat
             d_i$lon <- trajectory3$lon
