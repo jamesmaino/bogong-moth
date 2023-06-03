@@ -28,8 +28,18 @@ NSTEPS <- 2 # number of steps to run
 # [10] "Turretfield"          "Mt. Dowe"             "Point Lookout"
 # [13] "Laureldale, Armidale" "Newholme"             "Thora"
 # Case sensitive!
-LOCATIONS <- c("ARARAT", "HAMILTON", "HORSHAM", "RUTHERGLEN", "Maffra", "Yanakie")
-DATES <- c() # leave empty to run all sig_catch dates
+LOCATIONS <- c("ARARAT", "Maffra")
+DATES <- c() # leave empty to run all sig_catch dates for selected season/year bind data and calculate climatic variables
+SEASON <- "Spring" # "Summer", "Autumn", "Winter", "Spring", "Summer"
+YEAR <- 1980
+
+get_season <- function(input.date) {
+    m <- month(input.date)
+    cuts <- base::cut(m, breaks = c(0, 2, 5, 8, 11, 12))
+    # rename the resulting groups (could've been done within cut(...levels=) if "Winter" wasn't double
+    levels(cuts) <- c("Summer", "Autumn", "Winter", "Spring", "Summer")
+    return(cuts)
+}
 
 
 # useful constants
@@ -54,7 +64,14 @@ d <- d0 %>%
     mutate(year_month = format(date))
 
 # filter by dates if DATES specified
-if (length(DATES) > 0) d <- filter(d, as.Date(date) %in% as.Date(DATES))
+if (length(DATES) == 0) {
+    d <- d %>%
+        filter(get_season(date) == SEASON) %>%
+        filter(year(date) == YEAR)
+} else {
+    d <- d %>%
+        filter(as.Date(date) %in% as.Date(DATES))
+}
 
 if (nrow(d) == 0) {
     stop("no significant catch data found for selected locations or dates")
@@ -138,14 +155,6 @@ for (i in 1:nrow(d)) {
 
 
 # bind data and calculate climatic variables
-get_season <- function(input.date) {
-    m <- month(input.date)
-    cuts <- base::cut(m, breaks = c(0, 2, 5, 8, 11, 12))
-    # rename the resulting groups (could've been done within cut(...levels=) if "Winter" wasn't double
-    levels(cuts) <- c("Summer", "Autumn", "Winter", "Spring", "Summer")
-    return(cuts)
-}
-
 sims <- bind_rows(sims) %>%
     group_by(run) %>%
     mutate(rainfall = sum(rainfall)) %>%
@@ -202,7 +211,10 @@ plot_trajectory <- function(sims, plot_name) {
         geom_path(data = sims, aes(lon, lat, group = run, color = date), alpha = 0.5) +
         coord_sf(xlim = c(135, 155), ylim = c(-25, -45)) +
         ggtitle(plot_name)
-    if (length(DATES) == 0) p <- p + guides(color = "none")
+    if (length(DATES) == 0) {
+        p <- p +
+            ggtitle(paste(SEASON, YEAR))
+    }
     print(p)
     ggsave(paste0("./plots/", plot_name, ".png"))
 }
