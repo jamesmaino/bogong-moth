@@ -20,7 +20,7 @@ DURATION <- 12 # assume flight start 12 hours prior (6pm previous day)
 RAINFALL_THRESH <- 99999 # min rainfall (mm) threshold for migration (summed across flight path)
 TEMPERATURE_THRESH <- 4 # min drop in temperature (C) threshold for migration (from start to end of flight path)
 PRESSURE_THRESH <- 6 # min drop in pressure (mb) threshold for migration (from start to end of flight path)
-NSTEPS <- 4 # number of steps to run
+NSTEPS <- 2 # number of steps to run
 
 #  [1] "Maffra"               "HORSHAM"              "HAMILTON"
 #  [4] "BALLARAT"             "RUTHERGLEN"           "Yanakie"
@@ -29,7 +29,7 @@ NSTEPS <- 4 # number of steps to run
 # [13] "Laureldale, Armidale" "Newholme"             "Thora"
 # Case sensitive!
 LOCATIONS <- c("ARARAT", "HAMILTON", "HORSHAM", "RUTHERGLEN", "Maffra", "Yanakie")
-DATES <- c("1980-10-23", "1980-10-22", "1980-10-21")
+DATES <- c() # leave empty to run all sig_catch dates
 
 
 # useful constants
@@ -51,8 +51,10 @@ d <- d0 %>%
     ungroup() %>%
     unnest(date) %>%
     distinct() %>%
-    filter(as.Date(date) %in% as.Date(DATES)) %>%
     mutate(year_month = format(date))
+
+# filter by dates if DATES specified
+if (length(DATES) > 0) d <- filter(d, as.Date(date) %in% as.Date(DATES))
 
 if (nrow(d) == 0) {
     stop("no significant catch data found for selected locations or dates")
@@ -200,6 +202,7 @@ plot_trajectory <- function(sims, plot_name) {
         geom_path(data = sims, aes(lon, lat, group = run, color = date), alpha = 0.5) +
         coord_sf(xlim = c(135, 155), ylim = c(-25, -45)) +
         ggtitle(plot_name)
+    if (length(DATES) == 0) p <- p + guides(color = "none")
     print(p)
     ggsave(paste0("./plots/", plot_name, ".png"))
 }
