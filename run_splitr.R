@@ -29,18 +29,10 @@ NSTEPS <- 2 # number of steps to run
 # [13] "Laureldale, Armidale" "Newholme"             "Thora"
 # Case sensitive!
 LOCATIONS <- c("ARARAT", "Maffra")
-DATES <- c() # leave empty to run all sig_catch dates for selected season/year bind data and calculate climatic variables
-SEASON <- "Spring" # "Summer", "Autumn", "Winter", "Spring", "Summer"
-YEAR <- 1980
 
-get_season <- function(input.date) {
-    m <- month(input.date)
-    cuts <- base::cut(m, breaks = c(0, 2, 5, 8, 11, 12))
-    # rename the resulting groups (could've been done within cut(...levels=) if "Winter" wasn't double
-    levels(cuts) <- c("Summer", "Autumn", "Winter", "Spring", "Summer")
-    return(cuts)
-}
-
+DATES <- c() # leave empty to run all sig_catch dates for selected season/year. Dates overide season, year
+SEASONS <- c("Spring") # "Summer", "Autumn", "Winter", "Spring", "Summer"
+YEARS <- c(1980)
 
 # useful constants
 AEDT_TO_UTC_OFFSET <- -10 # offset to convert AEDT time to UTC
@@ -51,6 +43,14 @@ options(timeout = 5 * 60) # allow more time to download climatic files
 # create a new date for each day in the sample window
 d0 <- read_csv("./data/sig_catch.csv")
 
+# useful functions
+get_season <- function(input.date) {
+    m <- month(input.date)
+    cuts <- base::cut(m, breaks = c(0, 2, 5, 8, 11, 12))
+    # rename the resulting groups (could've been done within cut(...levels=) if "Winter" wasn't double
+    levels(cuts) <- c("Summer", "Autumn", "Winter", "Spring", "Summer")
+    return(cuts)
+}
 
 d <- d0 %>%
     mutate(date_sampled = as.Date(date)) %>%
@@ -66,8 +66,8 @@ d <- d0 %>%
 # filter by dates if DATES specified
 if (length(DATES) == 0) {
     d <- d %>%
-        filter(get_season(date) == SEASON) %>%
-        filter(year(date) == YEAR)
+        filter(get_season(date) %in% SEASONS) %>%
+        filter(year(date) %in% YEARS)
 } else {
     d <- d %>%
         filter(as.Date(date) %in% as.Date(DATES))
@@ -213,7 +213,7 @@ plot_trajectory <- function(sims, plot_name) {
         ggtitle(plot_name)
     if (length(DATES) == 0) {
         p <- p +
-            ggtitle(paste(SEASON, YEAR))
+            ggtitle(paste(paste(SEASONS, collapse = ", "), paste(YEARS, collapse = ", ")))
     }
     print(p)
     ggsave(paste0("./plots/", plot_name, ".png"))
