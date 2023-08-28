@@ -1,5 +1,5 @@
 ## commands for first run to install dependencies
-# install.packages(c("here","tidyverse", "lubridate", "sf", "ozmaps"))
+# install.packages(c("devtools", "here","tidyverse", "lubridate", "sf", "ozmaps"))
 # devtools::install_github("rich-iannone/splitr")
 
 library(splitr)
@@ -31,7 +31,8 @@ NSTEPS <- 2 # number of steps to run
 LOCATIONS <- c("ARARAT", "Maffra")
 
 DATES <- c() # leave empty to run all sig_catch dates for selected season/year. Dates overide season, year
-SEASONS <- c("Spring") # "Summer", "Autumn", "Winter", "Spring", "Summer"
+MONTHS <- c(11, 12) # leave empty to run all sig_catch dates for selected season/year. Months overide season
+SEASONS <- c() # "Summer", "Autumn", "Winter", "Spring", "Summer"
 YEARS <- c(1980)
 
 # useful constants
@@ -64,7 +65,11 @@ d <- d0 %>%
     mutate(year_month = format(date))
 
 # filter by dates if DATES specified
-if (length(DATES) == 0) {
+if (length(DATES) == 0 && length(MONTHS) > 0) {
+    d <- d %>%
+        filter(month(date) %in% MONTHS) %>%
+        filter(year(date) %in% YEARS)
+} else if (length(DATES) == 0 && MONTHS > 0) {
     d <- d %>%
         filter(get_season(date) %in% SEASONS) %>%
         filter(year(date) %in% YEARS)
@@ -211,7 +216,11 @@ plot_trajectory <- function(sims, plot_name) {
         geom_path(data = sims, aes(lon, lat, group = run, color = date), alpha = 0.5) +
         coord_sf(xlim = c(135, 155), ylim = c(-25, -45)) +
         ggtitle(plot_name)
-    if (length(DATES) == 0) {
+
+    if (length(DATES) == 0 && length(MONTHS) > 0) {
+        p <- p +
+            ggtitle(paste(paste(month.name[MONTHS], collapse = ", "), paste(YEARS, collapse = ", ")))
+    } else if (length(DATES) == 0 && length(SEASONS) > 0) {
         p <- p +
             ggtitle(paste(paste(SEASONS, collapse = ", "), paste(YEARS, collapse = ", ")))
     }
