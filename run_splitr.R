@@ -94,8 +94,6 @@ aus <- ozmap_data() %>%
 
 # recursively call hysplit_trajectory where the final point becomes the input to the next sim
 
-
-
 sims <- list()
 for (i in 1:nrow(d)) {
     # for (i in 1) {
@@ -131,8 +129,11 @@ for (i in 1:nrow(d)) {
             # 3 Is the 1000 m temp above 10C? Yes (5) No (4)
             # if(trajectory2$air_temp - 273.15 < 10) # we may as well run 4
 
+            # 3.5 Is the 1000 m temp at origin above 10C? Yes (4) No (6) (as per M Smith suggestion)
+            if (trajectory3$air_temp - 273.15 < 10) break
+
             # 4 Run HYSPLIT at 0 m from either the original or revised (coastal) starting point (run backwards or forwards, doesn’t matter, we just want the starting surface temp).  Is that temp above 10C? Yes (5), No (6)
-            trajectory3 <-
+            trajectory4 <-
                 hysplit_trajectory(
                     lat = trajectory3$lat,
                     lon = trajectory3$lon,
@@ -146,7 +147,7 @@ for (i in 1:nrow(d)) {
                     met_dir = here::here("met"),
                     exec_dir = here::here("out")
                 )
-            if (trajectory3$air_temp - 273.15 < 10) break
+            if (trajectory4$air_temp - 273.15 < 10) break
 
             # 5 Accept the trajectory
             trajectory[[j]] <- st_set_geometry(trajectory2, NULL)
