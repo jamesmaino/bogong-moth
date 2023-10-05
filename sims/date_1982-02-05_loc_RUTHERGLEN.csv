@@ -1,3 +1,0 @@
-run,receptor,hour_along,traj_dt,lat,lon,height,traj_dt_i,lat_i,lon_i,height_i,pressure,theta,air_temp,rainfall,mixdepth,rh,sp_humidity,h2o_mixrate,terr_msl,sun_flux,timespan
-date_1982-02-05_loc_RUTHERGLEN,1,0,1982-02-04T19:00:00Z,-36.101,146.507,1000,1982-02-04T19:00:00Z,-36.101,146.5073,1000,869,296.4,284.7,0,375.4,58.8,5.7,5.7,361.8,0,4
-date_1982-02-05_loc_RUTHERGLEN,1,-1,1982-02-04T18:00:00Z,-36.123,146.651,1020.1,1982-02-04T19:00:00Z,-36.101,146.5073,1000,865.4,296.4,284.3,0,334.6,60.2,5.7,5.8,373.7,0,4
