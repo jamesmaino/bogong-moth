@@ -19,7 +19,7 @@ save_temperature_plot <- function(sims, plot_name, plot_title = plot_name) {
         scale_x_datetime(date_breaks = "1 day", date_labels = "%d %b %Y") +
         ylab("Temp (C) or daily rainfall (mm)") +
         xlab("Date") +
-        ggtitle(plot_title) +
+        ggtitle(plot_name, plot_title) +
         facet_wrap(~sim_name, scales = "free")
 
     folder_name <- "temperature/"

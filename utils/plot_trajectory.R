@@ -30,7 +30,7 @@ save_trajectory_plot <- function(sims, plot_name, plot_title = plot_name) {
         scale_color_viridis_d(option = "A", end = 0.7) +
         # guides(color = "none") +
         coord_sf(xlim = c(135, 155), ylim = c(-25, -45)) +
-        ggtitle(plot_title)
+        ggtitle(plot_name, plot_title)
 
 
     plot_folder <- paste0("./results/plots/", "trajectories/")

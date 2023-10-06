@@ -2,7 +2,7 @@ source("./utils/bogong_moth_dev_model.R")
 source("./utils/get_silo_data.R")
 source("./utils/develop_bug.R")
 
-bogong <- bogong_moth()
+bogong <- bogong_moth_dev_model()
 
 get_lifecycle_duration <- function(yearstart, yearfinish, start_day, longitude, latitude) {
     silo <- get_silo_data(yearstart, yearfinish, longitude, latitude)
