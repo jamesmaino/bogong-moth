@@ -1,13 +1,13 @@
 ## commands for first run to install dependencies
-# install.packages(c("devtools", "here","tidyverse", "lubridate", "sf", "ozmaps"))
+# install.packages(c("devtools", "here","tidyverse", "readxl", "lubridate", "sf", "ozmaps", "scales"))
 # devtools::install_github("rich-iannone/splitr")
 
 source("./setup.R")
 source("./identify_sig_catch.R")
 source("./config/parameters.R")
 
-# sim_loc_and_date_settings <- read_csv("./config/sim_loc_date_settings.csv")
-sim_loc_and_date_settings <- read_csv("./config/sim_loc_date_settings_manual.csv")
+sim_loc_and_date_settings <- read_csv("./config/sim_loc_date_settings.csv")
+# sim_loc_and_date_settings <- read_csv("./config/sim_loc_date_settings_manual.csv")
 
 source("./utils/run_trajectory.R")
 sims <- list()

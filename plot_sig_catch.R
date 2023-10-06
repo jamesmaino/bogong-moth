@@ -73,7 +73,7 @@ for (iloc in unique(d$loc)) {
         width = 8, height = 5
     )
 
-    p_log <- p + scale_y_log10(labels = label_comma())
+    p_log <- p + scale_y_log10(labels = scales::label_comma())
     ggsave(
         sprintf("./results/plots/sig_catch/%s_log.png", iloc),
         p_log,

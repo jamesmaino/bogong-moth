@@ -11,4 +11,4 @@ MAX_N_STEPS <- 3 # max number of steps to run (DON'T CHANGE THIS, AS IT WILL RER
 TEMP_THRESH <- 12 # minimum temperature threshold for migration
 
 if (N_STEPS > MAX_N_STEPS) stop("N_STEPS has exceeded MAX_N_STEPS")
-options(timeout = 5 * 60) # allow more time to download climatic files
+options(timeout = 30 * 60) # allow more time to download climatic files
