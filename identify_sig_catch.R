@@ -6,7 +6,7 @@ library(ozmaps)
 source("./config/parameters.R")
 source("./utils/get_season.R")
 source("./utils/load_trap_data.R")
-
+source("./utils/get_lifecycle_duration.R")
 # options to specify a "significant catch"
 
 
@@ -25,7 +25,14 @@ sig_catch <- d %>%
     filter(
         daily_count > SEASONAL_COUNT_THRESH * mean_seasonal_daily_count &
             daily_count > DAILY_COUNT_THRESH
-    )
+    ) %>%
+    # estimate lifecycle duration
+    rowwise() %>%
+    mutate(lifecycle_duration = get_lifecycle_duration(
+        yearstart = season_year, yearfinish = season_year, start_day = yday(date), longitude = lon, latitude = lat
+    )) %>%
+    ungroup()
+
 write_csv(sig_catch, "./data/sig_catch.csv")
 
 # expand all dates within trapping window to be used in simulations

@@ -100,11 +100,11 @@ run_trajectory <- function(
                 trajectory[[j]] <- st_set_geometry(trajectory2, NULL) %>%
                     mutate(step = step)
                 # update starting conditions for next step
-                days <- as.Date(trajectory3$traj_dt)
+                cat(".")
+                days <- days - lubridate::days(1)
                 lat <- trajectory3$lat
                 lon <- trajectory3$lon
                 step <- step + 1
-
                 # 6 Reject the trajectory
             }
 
@@ -130,7 +130,8 @@ run_trajectory <- function(
         error = function(err) {
             # Handle errors
             message_content <- conditionMessage(err)
-            print(paste("Caught an error:", message_content))
+            suspect_file <- aedt_to_utc(days_AEDT, daily_hours_AEDT) - lubridate::days(step - 1) - hours(duration)
+            cat(paste("Caught an error:", "met data may be corrupted for ", date(suspect_file), "\n", message_content, "\n"))
             # print(paste("Caught an error:", err, date))
             return(NA) # Return a default value or do something else
         }
