@@ -1,5 +1,7 @@
 library(tidyverse)
 source("./utils/get_silo_data.R")
+source("./utils/load_trap_data.R")
+
 d <- load_trap_data()
 
 dsum <- d %>%

@@ -18,10 +18,10 @@ sig_catch <- d %>%
     group_by(loc, season, season_year) %>%
     mutate(mean_seasonal_daily_count = mean(daily_count)) %>%
     ungroup() %>%
-    mutate(
-        daily_count_thresh = DAILY_COUNT_THRESH,
-        seasonal_count_thresh = SEASONAL_COUNT_THRESH
-    ) %>%
+    # mutate(
+    #     daily_count_thresh = DAILY_COUNT_THRESH,
+    #     seasonal_count_thresh = SEASONAL_COUNT_THRESH
+    # ) %>%
     filter(
         daily_count > SEASONAL_COUNT_THRESH * mean_seasonal_daily_count &
             daily_count > DAILY_COUNT_THRESH

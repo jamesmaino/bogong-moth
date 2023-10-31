@@ -6,12 +6,13 @@ source("./setup.R")
 source("./identify_sig_catch.R")
 source("./config/parameters.R")
 
-sim_loc_and_date_settings <- read_csv("./config/sim_loc_date_settings.csv")
-# sim_loc_and_date_settings <- read_csv("./config/sim_loc_date_settings_manual.csv")
+# sim_loc_and_date_settings <- read_csv("./config/sim_loc_date_settings.csv")
+sim_loc_and_date_settings <- read_csv("./config/sim_loc_date_settings_manual.csv") %>%
+    mutate(date = dmy(date))
 
 source("./utils/run_trajectory.R")
 sims <- list()
-for (i in 1:nrow(sim_loc_and_date_settings)) {
+for (i in 1:1) {
     d_i <- sim_loc_and_date_settings[i, ]
     sim <- run_trajectory(
         lat = d_i$lat,
@@ -23,11 +24,11 @@ for (i in 1:nrow(sim_loc_and_date_settings)) {
         n_steps = N_STEPS,
         max_n_steps = MAX_N_STEPS,
         temp_thresh = TEMP_THRESH,
-        ignore_cache = FALSE
+        ignore_cache = TRUE
     )
 
     if (all(is.na(sim))) next
-    print(i)
+    print(sprintf("%s of %s", i, nrow(sim_loc_and_date_settings)))
     sims[[i]] <- sim %>%
         mutate(sim_name = paste(d_i$loc, d_i$date))
 }
