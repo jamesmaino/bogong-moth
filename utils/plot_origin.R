@@ -1,10 +1,12 @@
+library(sf)
+
 round_to_increment <- function(x, increment = 0.05) {
     rounded <- round(x / increment) * increment
     return(rounded)
 }
 
 
-save_origin_plot <- function(sims, grid_size, plot_name, plot_title = plot_name) {
+save_origin_plot <- function(sims, grid_size, plot_name, plot_title = plot_name, shp) {
     trap_sites <- sims %>%
         filter(step == 1) %>%
         group_by(lon_i, lat_i) %>%
@@ -71,13 +73,13 @@ plot_origin <- function(sims, grid_size) {
         st_join(shp) %>%
         st_set_geometry(NULL)
 
-    save_origin_plot(sims, grid_size, plot_name = "all", param_string)
+    save_origin_plot(sims, grid_size, plot_name = "all", param_string, shp = shp)
     for (season_i in c("Summer", "Autumn", "Winter", "Spring")) {
         try({
             sims %>%
                 mutate(season = get_season(traj_dt_i)) %>%
                 filter(season == season_i) %>%
-                save_origin_plot(grid_size, season_i, param_string)
+                save_origin_plot(grid_size, season_i, param_string, shp = shp)
         })
     }
 }
