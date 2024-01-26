@@ -24,10 +24,10 @@ save_trajectory_plot <- function(sims, plot_name, plot_title = plot_name) {
         mutate(date = factor(traj_dt_i)) %>%
         mutate(step = factor(step))
     p <- ggplot() +
-        geom_sf(data = aus) +
+        geom_sf(data = aus, fill = "white") +
         geom_point(data = trap_sites, aes(geometry = geometry), stat = "sf_coordinates") +
-        geom_path(data = sims, aes(lon, lat, group = sim_name, color = step), alpha = 0.5) +
-        scale_color_manual(values = c("black", "grey", "lightgrey")) +
+        geom_path(data = sims, aes(lon, lat, group = sim_name, color = step), alpha = 0.3) +
+        scale_color_manual(values = c("black", "lightgrey", "lightgrey")) +
         # scale_linetype_manual(values = c(1, 1, 2)) +
         # guides(color = "none") +
         coord_sf(xlim = c(135, 155), ylim = c(-25, -45)) +
@@ -35,7 +35,6 @@ save_trajectory_plot <- function(sims, plot_name, plot_title = plot_name) {
         theme_bw() +
         xlab("") +
         ylab("")
-
 
     plot_folder <- paste0("./results/plots/", "trajectories/")
     dir.create(plot_folder, recursive = TRUE, showWarnings = FALSE)
