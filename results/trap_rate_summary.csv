@@ -1,0 +1,127 @@
+loc,seasonal_year,Spring,Summer,Autumn,Winter
+Ararat,1980 - 1981,126.27,NA,4.49,0.05
+Ararat,1981 - 1982,94.52,9.73,14.29,1.86
+Ararat,1982 - 1983,8.56,9.71,1.43,0.41
+Ararat,1983 - 1984,16.25,6.70,4.24,0.13
+Ararat,1984 - 1985,9.97,61.28,5.91,NA
+Ararat,1985 - 1986,NA,4.19,NA,0.00
+Ararat,1986 - 1987,9.54,NA,NA,NA
+Ararat,1987 - 1988,39.18,7.27,NA,NA
+Ballarat,1983 - 1984,14.04,NA,NA,NA
+Ballarat,1984 - 1985,NA,13.43,NA,NA
+Fowlers Gap,1985 - 1986,NA,NA,NA,0.00
+Fowlers Gap,1986 - 1987,0.00,NA,0.00,0.00
+Fowlers Gap,1987 - 1988,0.00,0.00,0.14,2.26
+Fowlers Gap,1988 - 1989,0.00,0.06,1.18,1.67
+Fowlers Gap,1989 - 1990,0.02,0.00,NA,NA
+Hamilton,1980 - 1981,14.11,NA,0.88,0.03
+Hamilton,1981 - 1982,1.63,12.20,3.42,0.10
+Hamilton,1982 - 1983,2.60,8.86,0.86,0.17
+Hamilton,1983 - 1984,NA,2.68,NA,0.00
+Hamilton,1984 - 1985,2.10,NA,0.31,NA
+Hamilton,1985 - 1986,NA,1.74,NA,NA
+Horsham,1980 - 1981,24.80,NA,5.89,0.09
+Horsham,1981 - 1982,11.43,24.54,7.46,1.33
+Horsham,1982 - 1983,6.75,19.61,0.98,3.12
+Horsham,1983 - 1984,6.52,3.00,4.08,0.62
+Horsham,1984 - 1985,2.31,19.22,0.87,NA
+Horsham,1985 - 1986,NA,3.75,NA,NA
+Kingstown,1985 - 1986,1.30,NA,1.50,NA
+Kingstown,1986 - 1987,NA,4.50,NA,NA
+"Laureldale, Armidale",1984 - 1985,1.94,NA,1.53,NA
+"Laureldale, Armidale",1985 - 1986,2.26,1.75,2.40,NA
+"Laureldale, Armidale",1986 - 1987,3.32,1.00,2.00,NA
+"Laureldale, Armidale",1987 - 1988,3.33,1.58,1.56,2.75
+"Laureldale, Armidale",1988 - 1989,11.57,3.78,1.38,NA
+"Laureldale, Armidale",1989 - 1990,3.48,1.27,1.50,NA
+"Laureldale, Armidale",1990 - 1991,NA,2.41,NA,NA
+Maffra,1980 - 1981,143.31,NA,0.55,0.16
+Maffra,1981 - 1982,5.11,19.92,0.17,0.18
+Maffra,1982 - 1983,3.63,3.88,0.00,NA
+Maffra,1983 - 1984,NA,3.60,NA,NA
+Mt. Dowe,1986 - 1987,27.77,NA,4.29,NA
+Mt. Dowe,1987 - 1988,205.86,0.67,12.20,NA
+Mt. Dowe,1988 - 1989,38.10,55.67,0.75,NA
+Mt. Dowe,1989 - 1990,5.78,5.25,0.50,NA
+Mt. Dowe,1990 - 1991,NA,1.93,NA,NA
+Newholme,1985 - 1986,1.00,NA,1.56,NA
+Newholme,1986 - 1987,3.05,1.00,1.00,NA
+Newholme,1987 - 1988,6.81,1.25,1.13,NA
+Newholme,1988 - 1989,NA,2.54,NA,NA
+Point Lookout,1985 - 1986,10.44,NA,8.65,NA
+Point Lookout,1986 - 1987,7.09,1.62,5.95,NA
+Point Lookout,1987 - 1988,19.30,2.71,22.93,2.00
+Point Lookout,1988 - 1989,9.20,18.56,3.48,0.00
+Point Lookout,1989 - 1990,40.57,4.23,1.33,NA
+Point Lookout,1990 - 1991,NA,7.56,NA,NA
+Rutherglen,1980 - 1981,45.63,NA,28.74,0.24
+Rutherglen,1981 - 1982,13.53,29.31,33.36,2.98
+Rutherglen,1982 - 1983,6.10,69.51,3.62,NA
+Rutherglen,1983 - 1984,NA,14.52,NA,NA
+Stoney Rise,1991 - 1992,NA,NA,0.00,0.00
+Stoney Rise,1992 - 1993,0.35,0.04,0.18,0.00
+Stoney Rise,1993 - 1994,0.58,0.20,0.01,0.00
+Stoney Rise,1994 - 1995,0.35,0.09,0.08,0.01
+Stoney Rise,1995 - 1996,0.37,1.16,NA,0.00
+Stoney Rise,1996 - 1997,0.28,NA,0.05,0.01
+Stoney Rise,1997 - 1998,0.59,0.24,NA,0.00
+Stoney Rise,1998 - 1999,0.46,0.00,0.01,0.00
+Stoney Rise,1999 - 2000,0.41,0.18,0.00,0.00
+Stoney Rise,2000 - 2001,0.37,0.08,0.00,0.01
+Stoney Rise,2001 - 2002,0.36,0.41,0.02,0.01
+Stoney Rise,2002 - 2003,0.19,0.36,0.00,0.00
+Stoney Rise,2003 - 2004,0.35,0.41,0.07,0.00
+Stoney Rise,2004 - 2005,0.72,0.41,0.01,0.05
+Stoney Rise,2005 - 2006,0.42,0.14,0.05,0.00
+Stoney Rise,2006 - 2007,0.36,0.18,NA,NA
+Stoney Rise,2009 - 2010,NA,NA,NA,0.00
+Stoney Rise,2010 - 2011,0.11,NA,0.03,0.00
+Stoney Rise,2011 - 2012,0.10,0.07,0.00,0.00
+Stoney Rise,2012 - 2013,0.08,0.52,0.02,0.00
+Stoney Rise,2013 - 2014,0.17,0.52,0.01,0.00
+Stoney Rise,2014 - 2015,0.35,0.05,0.00,0.00
+Stoney Rise,2015 - 2016,0.00,0.02,0.03,0.00
+Stoney Rise,2016 - 2017,0.00,0.23,0.00,0.00
+Stoney Rise,2017 - 2018,0.03,0.07,0.01,0.00
+Stoney Rise,2018 - 2019,0.02,0.00,NA,NA
+Swanhill,1989 - 1990,NA,NA,NA,2.50
+Swanhill,1990 - 1991,12.88,NA,NA,NA
+Swanhill,1991 - 1992,6.34,NA,NA,NA
+Thora,1985 - 1986,1.54,NA,2.82,NA
+Thora,1986 - 1987,3.52,1.77,1.80,NA
+Thora,1987 - 1988,2.21,1.44,1.44,NA
+Thora,1988 - 1989,NA,1.15,NA,NA
+Turretfield,1960 - 1961,1.98,NA,NA,NA
+Turretfield,1961 - 1962,0.51,1.07,NA,NA
+Turretfield,1962 - 1963,2.29,0.41,0.00,NA
+Turretfield,1963 - 1964,2.03,0.15,NA,NA
+Turretfield,1964 - 1965,2.69,0.36,NA,NA
+Turretfield,1965 - 1966,0.69,1.41,0.00,NA
+Turretfield,1966 - 1967,3.84,0.74,NA,0.03
+Turretfield,1967 - 1968,2.43,2.52,NA,NA
+Turretfield,1968 - 1969,0.84,0.42,NA,0.00
+Turretfield,1969 - 1970,0.55,2.22,0.16,0.20
+Turretfield,1970 - 1971,1.33,0.29,0.11,0.10
+Turretfield,1971 - 1972,1.16,0.97,0.00,0.29
+Turretfield,1972 - 1973,1.55,1.23,0.02,0.60
+Turretfield,1973 - 1974,1.30,0.00,0.04,NA
+Turretfield,1974 - 1975,0.64,0.06,0.10,NA
+Turretfield,1975 - 1976,0.68,0.25,0.00,NA
+Turretfield,1976 - 1977,0.69,0.02,NA,NA
+Turretfield,1977 - 1978,0.64,NA,NA,NA
+Turretfield,1978 - 1979,2.01,0.13,NA,NA
+Turretfield,1979 - 1980,0.64,0.32,NA,0.06
+Turretfield,1980 - 1981,1.40,0.38,NA,NA
+Turretfield,1981 - 1982,0.49,0.08,NA,NA
+Turretfield,1982 - 1983,0.20,0.06,NA,NA
+Turretfield,1983 - 1984,0.41,0.02,NA,NA
+Turretfield,1984 - 1985,0.25,NA,NA,NA
+Turretfield,1985 - 1986,0.36,NA,NA,0.00
+Turretfield,1986 - 1987,0.88,0.40,NA,NA
+Turretfield,1987 - 1988,0.28,NA,NA,NA
+Yanakie,1980 - 1981,40.70,NA,0.92,0.19
+Yanakie,1981 - 1982,7.02,7.09,0.16,0.10
+Yanakie,1982 - 1983,6.29,26.20,0.19,0.01
+Yanakie,1983 - 1984,9.16,5.81,0.18,0.00
+Yanakie,1984 - 1985,1.96,6.28,0.63,NA
+Yanakie,1985 - 1986,NA,2.97,NA,NA

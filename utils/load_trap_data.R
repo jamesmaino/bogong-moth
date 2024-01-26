@@ -1,5 +1,6 @@
 library(tidyverse)
 library(readxl)
+source("./utils/get_season.R")
 
 load_trap_data <- function() {
     return(
@@ -14,6 +15,8 @@ load_trap_data <- function() {
                 lat = Lat
             ) %>%
             mutate(daily_count = count / timespan) %>%
-            drop_na()
+            drop_na() %>%
+            mutate(loc = stringr::str_to_title(loc)) %>%
+            mutate(season = get_season(date))
     )
 }

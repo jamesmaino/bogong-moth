@@ -27,10 +27,14 @@ save_trajectory_plot <- function(sims, plot_name, plot_title = plot_name) {
         geom_sf(data = aus) +
         geom_point(data = trap_sites, aes(geometry = geometry), stat = "sf_coordinates") +
         geom_path(data = sims, aes(lon, lat, group = sim_name, color = step), alpha = 0.5) +
-        scale_color_viridis_d(option = "A", end = 0.7) +
+        scale_color_manual(values = c("black", "grey", "lightgrey")) +
+        # scale_linetype_manual(values = c(1, 1, 2)) +
         # guides(color = "none") +
         coord_sf(xlim = c(135, 155), ylim = c(-25, -45)) +
-        ggtitle(plot_name, plot_title)
+        ggtitle(plot_name, plot_title) +
+        theme_bw() +
+        xlab("") +
+        ylab("")
 
 
     plot_folder <- paste0("./results/plots/", "trajectories/")

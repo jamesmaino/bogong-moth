@@ -12,7 +12,7 @@ sim_loc_and_date_settings <- read_csv("./config/sim_loc_date_settings_manual.csv
 
 source("./utils/run_trajectory.R")
 sims <- list()
-for (i in 1:1) {
+for (i in 1:nrow(sim_loc_and_date_settings)) {
     d_i <- sim_loc_and_date_settings[i, ]
     sim <- run_trajectory(
         lat = d_i$lat,
@@ -24,7 +24,7 @@ for (i in 1:1) {
         n_steps = N_STEPS,
         max_n_steps = MAX_N_STEPS,
         temp_thresh = TEMP_THRESH,
-        ignore_cache = TRUE
+        ignore_cache = FALSE
     )
 
     if (all(is.na(sim))) next
@@ -32,6 +32,7 @@ for (i in 1:1) {
     sims[[i]] <- sim %>%
         mutate(sim_name = paste(d_i$loc, d_i$date))
 }
+
 sims <- bind_rows(sims)
 
 source("./utils/plot_trajectory.R")
