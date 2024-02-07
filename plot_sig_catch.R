@@ -41,12 +41,21 @@ for (iloc in unique(d$loc)) {
     i_lifecycle <- lifecycle %>%
         filter(loc == iloc)
 
+    i_end_lifecycle <- i_lifecycle %>%
+        group_by(season_year, loc, date) %>%
+        summarise(
+            daily_count = daily_count[1],
+            date = date[1],
+            lifecycle_duration = lifecycle_duration[1]
+        )
+
     p <- d %>%
         filter(loc == iloc) %>%
         # filter(daily_count != 0) %>%
         ggplot(aes(yday_to_date(yday(date)), daily_count, color = season_year)) +
         geom_line() +
         geom_point(data = isig_catch, shape = 21, size = 2) +
+        geom_point(data = i_end_lifecycle, aes(x = yday_to_date(yday(date)) + lifecycle_duration), size = 1, alpha = 0.3) +
         geom_hline(yintercept = isig_catch$daily_count_thresh[1], linetype = 2, color = "grey") +
         geom_line(data = i_lifecycle, aes(x = lifecycle_span, group = paste(loc, date)), linetype = 3) +
         # scale_y_log10() +
@@ -65,7 +74,6 @@ for (iloc in unique(d$loc)) {
             )
         ) +
         theme(axis.text.x = element_text(angle = 90, vjust = 0.5))
-
 
     ggsave(
         sprintf("./results/plots/sig_catch/%s.png", iloc),

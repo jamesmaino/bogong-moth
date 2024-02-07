@@ -15,7 +15,7 @@ get_lifecycle_duration <- function(yearstart, yearfinish, start_day, longitude, 
     Tmax <- silo$max_temp
     TMAX <- sapply(Tmax, function(x) list(x))
 
-    data <- develop_bug(Tmax = TMAX, Tmin = TMAX, startDay = start_day, startStage = 1, insect = bogong, gens = 1)
+    data <- develop_bug(Tmax = TMAX, Tmin = TMIN, startDay = start_day, startStage = 1, insect = bogong, gens = 1)
     duration <- sum(data[, , "Stage_duration"])
     return(duration)
 }
