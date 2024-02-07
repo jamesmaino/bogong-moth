@@ -68,10 +68,10 @@ for (iloc in unique(d$loc)) {
         theme_bw() +
         ggtitle(
             iloc,
-            paste0(
-                "SEASONAL COUNT THRESH = ", isig_catch$seasonal_count_thresh[1], "X\n",
-                "DAILY COUNT THRESH = ", isig_catch$daily_count_thresh[1]
-            )
+            # paste0(
+            #     "SEASONAL COUNT THRESH = ", isig_catch$seasonal_count_thresh[1], "X\n",
+            #     "DAILY COUNT THRESH = ", isig_catch$daily_count_thresh[1]
+            # )
         ) +
         theme(axis.text.x = element_text(angle = 90, vjust = 0.5))
 
