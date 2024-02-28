@@ -67,11 +67,39 @@ write_csv(trap_rate_summary, "./results/trap_rate_summary.csv")
 dsum <- d %>%
     group_by(loc, lon, lat) %>%
     summarise(n = n()) %>%
-    st_as_sf(coords = c("lon", "lat"), crs = 4326, remove = FALSE)
+    st_as_sf(coords = c("lon", "lat"), crs = 4326, remove = FALSE) %>%
+    st_set_geometry(NULL) %>%
+    select(name = loc, lon, lat) %>%
+    mutate(loc = "site")
 
-ggplot(dsum) +
-    geom_sf(data = aus) +
-    geom_point(aes(x = lon, y = lat)) +
-    geom_text_repel(aes(x = lon, y = lat, label = stringr::str_to_title(loc)), max.overlaps = 100) +
+states <- aus %>%
+    sf::st_centroid(aus) %>%
+    filter(!NAME %in% c("Other Territories", "Australian Capital Territory")) %>%
+    mutate(NAME = dplyr::recode(NAME,
+        `Western Australia` = "WA",
+        `Northern Territory` = "NT",
+        `Queensland` = "QLD",
+        `South Australia` = "SA",
+        `New South Wales` = "NSW",
+        Victoria = "Vic",
+        Tasmania = "Tas"
+    )) %>%
+    transmute(name = NAME) %>%
+    mutate(loc = "state")
+
+states[, c("lon", "lat")] <- sf::st_coordinates(states)
+
+states %>%
+    st_set_geometry(NULL) %>%
+    select(name, lon, lat, loc) %>%
+    bind_rows(dsum) %>%
+    ggplot() +
+    geom_sf(data = aus, fill = "white") +
+    geom_point(aes(x = lon, y = lat, shape = loc)) +
+    geom_text_repel(aes(x = lon, y = lat, color = loc, label = ifelse(loc == "site", stringr::str_to_title(name), name)), max.overlaps = 1000) +
+    scale_shape_manual(values = c(21, NA)) +
+    scale_color_manual(values = c("black", "grey")) +
+    guides(color = "none", shape = "none") +
     theme_void()
-ggsave("./results/plots/site_locations.png")
+
+ggsave("./results/plots/site_locations.png", width = 10, height = 10)
