@@ -5,7 +5,8 @@ source("./utils/get_season.R")
 library(ggrepel)
 # Plot site location
 aus <- ozmap_data() %>%
-    st_transform(4326)
+    st_transform(4326) %>%
+    filter(!NAME %in% c("Other Territories", "Australian Capital Territory"))
 
 d <- load_trap_data()
 
@@ -74,32 +75,25 @@ dsum <- d %>%
 
 states <- aus %>%
     sf::st_centroid(aus) %>%
-    filter(!NAME %in% c("Other Territories", "Australian Capital Territory")) %>%
     mutate(NAME = dplyr::recode(NAME,
         `Western Australia` = "WA",
         `Northern Territory` = "NT",
         `Queensland` = "QLD",
         `South Australia` = "SA",
         `New South Wales` = "NSW",
-        Victoria = "Vic",
-        Tasmania = "Tas"
-    )) %>%
-    transmute(name = NAME) %>%
-    mutate(loc = "state")
-
+        Victoria = "VIC",
+        Tasmania = "TAS"
+    ))
 states[, c("lon", "lat")] <- sf::st_coordinates(states)
+states[states$NAME == "NSW", ]$lat <- -32.9
+states[states$NAME == "VIC", ]$lat <- -36.4
 
-states %>%
-    st_set_geometry(NULL) %>%
-    select(name, lon, lat, loc) %>%
-    bind_rows(dsum) %>%
+dsum %>%
     ggplot() +
     geom_sf(data = aus, fill = "white") +
-    geom_point(aes(x = lon, y = lat, shape = loc)) +
-    geom_text_repel(aes(x = lon, y = lat, color = loc, label = ifelse(loc == "site", stringr::str_to_title(name), name)), max.overlaps = 1000) +
-    scale_shape_manual(values = c(21, NA)) +
-    scale_color_manual(values = c("black", "grey")) +
-    guides(color = "none", shape = "none") +
+    geom_point(aes(x = lon, y = lat), shape = 21) +
+    geom_text_repel(aes(x = lon, y = lat, label = name), max.overlaps = 1000, seed = 123) +
+    geom_text(data = states, aes(lon, lat, label = NAME), color = "grey") +
     theme_void()
 
-ggsave("./results/plots/site_locations.png", width = 10, height = 10)
+ggsave("./results/plots/site_locations.png", width = 11, height = 11)
