@@ -3,6 +3,7 @@ source("./utils/load_trap_data.R")
 source("./utils/get_season.R")
 
 library(ggrepel)
+library(ggspatial)
 # Plot site location
 aus <- ozmap_data() %>%
     st_transform(4326) %>%
@@ -94,6 +95,7 @@ dsum %>%
     geom_point(aes(x = lon, y = lat), shape = 21) +
     geom_text_repel(aes(x = lon, y = lat, label = name), max.overlaps = 1000, seed = 123) +
     geom_text(data = states, aes(lon, lat, label = NAME), color = "grey") +
+    annotation_scale(location = "bl", width_hint = 0.5) +
     theme_void()
 
-ggsave("./results/plots/site_locations.png", width = 11, height = 11)
+ggsave("./results/plots/site_locations.png", width = 10, height = 10)
