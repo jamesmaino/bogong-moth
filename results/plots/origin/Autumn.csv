@@ -1,10 +1,18 @@
 REG_NAME_7,count
+Brigalow Belt South,3
+Channel Country,1
+Cobar Peneplain,1
+Mulga Lands,1
+NSW North Coast,4
+NSW South Western Slopes,1
+New England Tablelands,2
+South Eastern Highlands,1
+Sydney Basin,1
 Arnhem Coast,NA
 Arnhem Plateau,NA
 Australian Alps,NA
 Avon Wheatbelt,NA
 Brigalow Belt North,NA
-Brigalow Belt South,NA
 Ben Lomond,NA
 Broken Hill Complex,NA
 Burt Plain,NA
@@ -12,10 +20,8 @@ Carnarvon,NA
 Central Arnhem,NA
 Central Kimberley,NA
 Central Ranges,NA
-Channel Country,NA
 Central Mackay Coast,NA
 Coolgardie,NA
-Cobar Peneplain,NA
 Coral Sea,NA
 Cape York Peninsula,NA
 Daly Basin,NA
@@ -50,14 +56,10 @@ Mallee,NA
 Murray Darling Depression,NA
 Mitchell Grass Downs,NA
 Mount Isa Inlier,NA
-Mulga Lands,NA
 Murchison,NA
 Nandewar,NA
 Naracoorte Coastal Plain,NA
-New England Tablelands,NA
-NSW North Coast,NA
 Northern Kimberley,NA
-NSW South Western Slopes,NA
 Nullarbor,NA
 Ord Victoria Plain,NA
 Pine Creek,NA
@@ -67,14 +69,12 @@ Riverina,NA
 Subantarctic Islands,NA
 South East Coastal Plain,NA
 South East Corner,NA
-South Eastern Highlands,NA
 South Eastern Queensland,NA
 Simpson Strzelecki Dunefields,NA
 Stony Plains,NA
 Sturt Plateau,NA
 Southern Volcanic Plain,NA
 Swan Coastal Plain,NA
-Sydney Basin,NA
 Tanami,NA
 Tasmanian Central Highlands,NA
 Tiwi Cobourg,NA

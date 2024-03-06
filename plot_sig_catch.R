@@ -52,15 +52,16 @@ for (iloc in unique(d$loc)) {
     p <- d %>%
         filter(loc == iloc) %>%
         # filter(daily_count != 0) %>%
-        ggplot(aes(yday_to_date(yday(date)), daily_count, color = season_year)) +
+        ggplot(aes(yday_to_date(yday(date)), daily_count, color = loc)) +
         geom_line() +
         geom_point(data = isig_catch, shape = 21, size = 2) +
         geom_point(data = i_end_lifecycle, aes(x = yday_to_date(yday(date)) + lifecycle_duration), size = 1, alpha = 0.3) +
+        geom_point(aes(y = rep(0, length(date))), color = "#9c9c9c", shape = 15, size = 2) +
         geom_hline(yintercept = isig_catch$daily_count_thresh[1], linetype = 2, color = "grey") +
         geom_line(data = i_lifecycle, aes(x = lifecycle_span, group = paste(loc, date)), linetype = 3) +
         # scale_y_log10() +
         scale_x_date(date_break = "1 month", date_labels = "%b") +
-        scale_color_viridis_d(name = "Year", option = "A", end = 0.9) +
+        scale_color_manual(values = c("#4f4f4f")) +
         facet_wrap(~season_year) +
         xlab("") +
         ylab("Daily count") +
@@ -74,7 +75,7 @@ for (iloc in unique(d$loc)) {
             # )
         ) +
         theme(axis.text.x = element_text(angle = 90, vjust = 0.5))
-
+    p
     ggsave(
         sprintf("./results/plots/sig_catch/%s.png", iloc),
         p,
@@ -82,9 +83,18 @@ for (iloc in unique(d$loc)) {
     )
 
     p_log <- p + scale_y_log10(labels = scales::label_comma())
+    print(p_log)
     ggsave(
         sprintf("./results/plots/sig_catch/%s_log.png", iloc),
         p_log,
         width = 8, height = 5
     )
+
+    if (iloc == "Turretfield") {
+        ggsave(
+            sprintf("./results/plots/sig_catch/%s_log_large.png", iloc),
+            p_log,
+            width = 13, height = 20
+        )
+    }
 }

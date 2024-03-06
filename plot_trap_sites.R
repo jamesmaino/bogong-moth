@@ -9,7 +9,9 @@ aus <- ozmap_data() %>%
     st_transform(4326) %>%
     filter(!NAME %in% c("Other Territories", "Australian Capital Territory"))
 
-d <- load_trap_data()
+d <- load_trap_data() %>%
+    group_by(loc) %>%
+    mutate(loc = paste0(loc, "\n", format(min(date), "%Y"), "-", format(max(date), "%y")))
 
 dsum_season <- d %>%
     group_by(loc, season) %>%
@@ -87,15 +89,20 @@ states <- aus %>%
     ))
 states[, c("lon", "lat")] <- sf::st_coordinates(states)
 states[states$NAME == "NSW", ]$lat <- -32.9
-states[states$NAME == "VIC", ]$lat <- -36.4
+states[states$NAME == "VIC", ]$lat <- -37
+states[states$NAME == "VIC", ]$lon <- 145
 
-dsum %>%
+p <- dsum %>%
     ggplot() +
     geom_sf(data = aus, fill = "white") +
     geom_point(aes(x = lon, y = lat), shape = 21) +
     geom_text_repel(aes(x = lon, y = lat, label = name), max.overlaps = 1000, seed = 123) +
     geom_text(data = states, aes(lon, lat, label = NAME), color = "grey") +
-    annotation_scale(location = "bl", width_hint = 0.5) +
-    theme_void()
+    annotation_scale(location = "bl", width_hint = 0.5, pad_y = unit(1, "cm")) +
+    coord_sf(xlim = c(135, 155), ylim = c(-25, -45)) +
+    theme_bw() +
+    xlab("") +
+    ylab("")
+print(p)
 
-ggsave("./results/plots/site_locations.png", width = 10, height = 10)
+ggsave("./results/plots/site_locations.png", p, width = 10, height = 10)
