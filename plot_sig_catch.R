@@ -75,7 +75,6 @@ for (iloc in unique(d$loc)) {
             # )
         ) +
         theme(axis.text.x = element_text(angle = 90, vjust = 0.5))
-    p
     ggsave(
         sprintf("./results/plots/sig_catch/%s.png", iloc),
         p,
@@ -83,7 +82,6 @@ for (iloc in unique(d$loc)) {
     )
 
     p_log <- p + scale_y_log10(labels = scales::label_comma())
-    print(p_log)
     ggsave(
         sprintf("./results/plots/sig_catch/%s_log.png", iloc),
         p_log,
