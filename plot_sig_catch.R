@@ -3,10 +3,56 @@ library(scales)
 source("./utils/yday_to_date.R")
 source("./utils/load_trap_data.R")
 
+
+# a function to convert a vector of years into a vector of groupings where consecutive years are grouped together as ranges (e.g., "1980-1981") and standalone years are left as is
+createYearGroups <- function(years) {
+  # Ensure the years are sorted and unique for grouping
+  unique_years <- unique(sort(years))
+  
+  # Create a vector to identify breaks in consecutive years for unique years
+  is_break <- c(TRUE, diff(unique_years) != 1)
+  
+  # Generate group IDs based on breaks (each TRUE in is_break starts a new group)
+  group_id <- cumsum(is_break)
+  
+  # Prepare a named vector mapping each unique year to its group
+  year_to_group_map <- setNames(rep(NA, length(unique_years)), unique_years)
+  
+  # Map each group ID to its range or single year for unique years
+  for(gid in unique(group_id)) {
+    current_years <- unique_years[group_id == gid]
+    group_str <- if(length(current_years) > 1) {
+      paste(min(current_years), max(current_years), sep = "-")
+    } else {
+      as.character(current_years)
+    }
+    year_to_group_map[names(year_to_group_map) %in% current_years] <- group_str
+  }
+  
+  # Map back the group ranges to the original years using the prepared map
+  year_groups <- year_to_group_map[as.character(years)]
+  
+  return(year_groups)
+}
+
+# Example usage with duplicates
+years <- c(1980, 1980, 1981, 1983, 1985)
+createYearGroups(years)
+
+load_trap_data() %>%
+    mutate(year = year(date)) %>% 
+    group_by(loc, year) %>% 
+    summarise(n = n())
+
 # full data set
 d <- load_trap_data() %>%
-    mutate(season_year = factor(year(date)))
-
+    mutate(year = year(date)) %>%
+    mutate(season_year = factor(year(date))) %>%
+    group_by(loc) %>% 
+    mutate(year_group = createYearGroups(year))  %>% 
+    ungroup()
+    
+distinct(d, loc, season_year, year_group)
 # only sig catches
 sig_catch <- read_csv("./data/sig_catch.csv") %>%
     mutate(season_year = factor(year(date)))
@@ -75,13 +121,15 @@ for (iloc in unique(d$loc)) {
             # )
         ) +
         theme(axis.text.x = element_text(angle = 90, vjust = 0.5))
+    p
     ggsave(
         sprintf("./results/plots/sig_catch/%s.png", iloc),
         p,
         width = 8, height = 5
     )
 
-    p_log <- p + scale_y_log10(labels = scales::label_comma())
+    p_log <- p + scale_y_log10(labels = scales::label_comma(), 
+    limits = c(0.1,max(d$daily_count))) 
     ggsave(
         sprintf("./results/plots/sig_catch/%s_log.png", iloc),
         p_log,
