@@ -1,90 +1,90 @@
-REG_NAME_7,count
-Brigalow Belt South,16
-Cobar Peneplain,2
-Darling Riverine Plains,2
-Mulga Lands,1
-NSW North Coast,10
-Nandewar,6
-New England Tablelands,6
-South Eastern Queensland,5
-Sydney Basin,2
-Arnhem Coast,NA
-Arnhem Plateau,NA
-Australian Alps,NA
-Avon Wheatbelt,NA
-Brigalow Belt North,NA
-Ben Lomond,NA
-Broken Hill Complex,NA
-Burt Plain,NA
-Carnarvon,NA
-Central Arnhem,NA
-Central Kimberley,NA
-Central Ranges,NA
-Channel Country,NA
-Central Mackay Coast,NA
-Coolgardie,NA
-Coral Sea,NA
-Cape York Peninsula,NA
-Daly Basin,NA
-Darwin Coastal,NA
-Dampierland,NA
-Desert Uplands,NA
-Davenport Murchison Ranges,NA
-Einasleigh Uplands,NA
-Esperance Plains,NA
-Eyre Yorke Block,NA
-Finke,NA
-Flinders Lofty Block,NA
-Furneaux,NA
-Gascoyne,NA
-Gawler,NA
-Geraldton Sandplains,NA
-Gulf Fall and Uplands,NA
-Gibson Desert,NA
-Great Sandy Desert,NA
-Gulf Coastal,NA
-Gulf Plains,NA
-Great Victoria Desert,NA
-Hampton,NA
-Indian Tropical Islands,NA
-Jarrah Forest,NA
-Kanmantoo,NA
-King,NA
-Little Sandy Desert,NA
-MacDonnell Ranges,NA
-Mallee,NA
-Murray Darling Depression,NA
-Mitchell Grass Downs,NA
-Mount Isa Inlier,NA
-Murchison,NA
-Naracoorte Coastal Plain,NA
-Northern Kimberley,NA
-NSW South Western Slopes,NA
-Nullarbor,NA
-Ord Victoria Plain,NA
-Pine Creek,NA
-Pilbara,NA
-Pacific Subtropical Islands,NA
-Riverina,NA
-Subantarctic Islands,NA
-South East Coastal Plain,NA
-South East Corner,NA
-South Eastern Highlands,NA
-Simpson Strzelecki Dunefields,NA
-Stony Plains,NA
-Sturt Plateau,NA
-Southern Volcanic Plain,NA
-Swan Coastal Plain,NA
-Tanami,NA
-Tasmanian Central Highlands,NA
-Tiwi Cobourg,NA
-Tasmanian Northern Midlands,NA
-Tasmanian Northern Slopes,NA
-Tasmanian South East,NA
-Tasmanian Southern Ranges,NA
-Tasmanian West,NA
-Victoria Bonaparte,NA
-Victorian Midlands,NA
-Warren,NA
-Wet Tropics,NA
-Yalgoo,NA
+REG_NAME_7,REG_CODE_7,count
+Brigalow Belt South,BBS,17
+Cobar Peneplain,COP,2
+Darling Riverine Plains,DRP,2
+Mulga Lands,MUL,1
+NSW North Coast,NNC,10
+Nandewar,NAN,6
+New England Tablelands,NET,6
+South Eastern Queensland,SEQ,6
+Sydney Basin,SYB,2
+Arnhem Coast,ARC,NA
+Arnhem Plateau,ARP,NA
+Australian Alps,AUA,NA
+Avon Wheatbelt,AVW,NA
+Brigalow Belt North,BBN,NA
+Ben Lomond,BEL,NA
+Broken Hill Complex,BHC,NA
+Burt Plain,BRT,NA
+Carnarvon,CAR,NA
+Central Arnhem,CEA,NA
+Central Kimberley,CEK,NA
+Central Ranges,CER,NA
+Channel Country,CHC,NA
+Central Mackay Coast,CMC,NA
+Coolgardie,COO,NA
+Coral Sea,COS,NA
+Cape York Peninsula,CYP,NA
+Daly Basin,DAB,NA
+Darwin Coastal,DAC,NA
+Dampierland,DAL,NA
+Desert Uplands,DEU,NA
+Davenport Murchison Ranges,DMR,NA
+Einasleigh Uplands,EIU,NA
+Esperance Plains,ESP,NA
+Eyre Yorke Block,EYB,NA
+Finke,FIN,NA
+Flinders Lofty Block,FLB,NA
+Furneaux,FUR,NA
+Gascoyne,GAS,NA
+Gawler,GAW,NA
+Geraldton Sandplains,GES,NA
+Gulf Fall and Uplands,GFU,NA
+Gibson Desert,GID,NA
+Great Sandy Desert,GSD,NA
+Gulf Coastal,GUC,NA
+Gulf Plains,GUP,NA
+Great Victoria Desert,GVD,NA
+Hampton,HAM,NA
+Indian Tropical Islands,ITI,NA
+Jarrah Forest,JAF,NA
+Kanmantoo,KAN,NA
+King,KIN,NA
+Little Sandy Desert,LSD,NA
+MacDonnell Ranges,MAC,NA
+Mallee,MAL,NA
+Murray Darling Depression,MDD,NA
+Mitchell Grass Downs,MGD,NA
+Mount Isa Inlier,MII,NA
+Murchison,MUR,NA
+Naracoorte Coastal Plain,NCP,NA
+Northern Kimberley,NOK,NA
+NSW South Western Slopes,NSS,NA
+Nullarbor,NUL,NA
+Ord Victoria Plain,OVP,NA
+Pine Creek,PCK,NA
+Pilbara,PIL,NA
+Pacific Subtropical Islands,PSI,NA
+Riverina,RIV,NA
+Subantarctic Islands,SAI,NA
+South East Coastal Plain,SCP,NA
+South East Corner,SEC,NA
+South Eastern Highlands,SEH,NA
+Simpson Strzelecki Dunefields,SSD,NA
+Stony Plains,STP,NA
+Sturt Plateau,STU,NA
+Southern Volcanic Plain,SVP,NA
+Swan Coastal Plain,SWA,NA
+Tanami,TAN,NA
+Tasmanian Central Highlands,TCH,NA
+Tiwi Cobourg,TIW,NA
+Tasmanian Northern Midlands,TNM,NA
+Tasmanian Northern Slopes,TNS,NA
+Tasmanian South East,TSE,NA
+Tasmanian Southern Ranges,TSR,NA
+Tasmanian West,TWE,NA
+Victoria Bonaparte,VIB,NA
+Victorian Midlands,VIM,NA
+Warren,WAR,NA
+Wet Tropics,WET,NA
+Yalgoo,YAL,NA

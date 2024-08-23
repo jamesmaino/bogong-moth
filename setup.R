@@ -3,6 +3,7 @@ library(lubridate)
 library(readxl)
 library(sf)
 library(ozmaps)
+library(ggrepel)
 
 source("./config/parameters.R")
 # create met and out dir for simulations

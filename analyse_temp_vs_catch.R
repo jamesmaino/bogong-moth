@@ -6,7 +6,8 @@ source("./utils/calc_hourly_temp.R")
 
 # load traps but only include SA and NSW traps
 d <- load_trap_data() %>%
-    filter(loc %in% c("Lareldale, Armidale", "Point Lookout", "Mt. Dowe", "Kingstown", "Newholme", "Thora", "Turretfield"))
+    filter(loc %in% c("Lareldale, Armidale", "Point Lookout", "Mt. Dowe", "Newholme", "Thora", "Turretfield")) %>%
+    mutate(loc = factor(loc, levels = c("Turretfield", "Lareldale, Armidale", "Point Lookout", "Mt. Dowe", "Newholme", "Thora")))
 
 dsum <- d %>%
     group_by(loc, lon, lat) %>%
@@ -42,10 +43,10 @@ df <- d %>%
     mutate(total_count_cumulative = cumsum(total_count))
 
 df %>%
-    ggplot(aes(temp_round, total_count_cumulative, color = loc)) +
+    ggplot(aes(temp_round, total_count_cumulative)) +
     geom_point() +
     geom_line(alpha = 0.5) +
-    guides(color = "none") +
+    # guides(color = "none") +
     facet_wrap(~loc, scales = "free") +
     theme_bw() +
     xlab("Temperature (°C)") +

@@ -1,4 +1,5 @@
 library(sf)
+library(ggrepel)
 
 round_to_increment <- function(x, increment = 0.05) {
     rounded <- round(x / increment) * increment
@@ -28,17 +29,25 @@ save_origin_plot <- function(sims, grid_size, plot_name, plot_title = plot_name,
 
     bioreg_sum <- sims %>%
         filter(hour_along == -DURATION) %>%
-        group_by(REG_NAME_7) %>%
+        group_by(REG_NAME_7, REG_CODE_7) %>%
         summarise(
             count = n(),
             .groups = "drop"
         ) %>%
-        right_join(shp[, c("REG_NAME_7")]) %>%
+        right_join(shp[, c("REG_NAME_7", "REG_CODE_7")]) %>%
         st_as_sf()
 
     bioreg_sum %>%
         st_set_geometry(NULL) %>%
         write_csv(paste0("./results/plots/origin/", plot_name, ".csv"))
+
+    reg_codes <- bioreg_sum %>%
+        st_centroid() %>%
+        mutate(
+            lon = st_coordinates(.)[, 1],
+            lat = st_coordinates(.)[, 2]
+        ) %>%
+        st_drop_geometry()
 
     ggplot() +
         # geom_sf(data = aus, color = "black", alpha = 0) +
@@ -48,6 +57,13 @@ save_origin_plot <- function(sims, grid_size, plot_name, plot_title = plot_name,
         coord_sf(xlim = c(135, 155), ylim = c(-25, -45)) +
         ggtitle(plot_name, plot_title) +
         theme_bw() +
+        geom_text_repel(
+            size = 3,
+            data = reg_codes, aes(lon, lat, label = REG_CODE_7),
+            color = "white", # text color
+            bg.color = "grey30", # shadow color
+            bg.r = 0.15 # shadow radius
+        ) +
         scale_fill_viridis_c(name = "Count", na.value = "white", begin = 0.2, end = 0.9, direction = -1, option = "A") +
         xlab("") +
         ylab("")
