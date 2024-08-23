@@ -42,6 +42,7 @@ save_origin_plot <- function(sims, grid_size, plot_name, plot_title = plot_name,
         write_csv(paste0("./results/plots/origin/", plot_name, ".csv"))
 
     reg_codes <- bioreg_sum %>%
+        filter(count > 0) %>%
         st_centroid() %>%
         mutate(
             lon = st_coordinates(.)[, 1],
